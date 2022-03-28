@@ -5,7 +5,7 @@ import { IoMdSettings } from "react-icons/io";
 
 function Navbar() {
   return (
-    <nav className="flex flex-wrap justify-between px-4 py-2 border-b border-[#3A3A3C] font-serif font-semibold tracking-tighter items-center">
+    <nav className="flex flex-wrap justify-between px-4 py-2 border-b border-[#3A3A3C] font-semibold font-sans tracking-tighter items-center">
       <div className="inline-flex flex-row">
         <a>
           <FaBars className="w-[1.375rem] h-[1.375rem]" />

@@ -14,6 +14,8 @@ function App() {
     const [words, setWords] = useState("");
     const [invalid, setInvalid] = useState(false);
 
+    const ls = localStorage;
+
     useEffect(() => {
         // Fetch 5k words from file, choose one randomly, make it uppercase,
         // assign "text" state to check is word is valid later
@@ -55,10 +57,20 @@ function App() {
                 if (guess == word) {
                     setFinished(true);
                     toast.success("Congradulations! You won!");
-                    // if user has entered max amount of guesses with no right answer, print error
-                } else if (guessArray.length == 5) {
+                    ls.setItem("won", parseInt(ls.won) + 1);
+                    ls.setItem("played", parseInt(ls.played) + 1);
+
+                    // used to convert string to array then update according to how many guesses user took then convert back to string
+                    // all cus localStorage can't handle arrays
+                    let gDist = ls.guessDist.split(",");
+                    gDist[guessArray.length]++;
+                    ls.setItem("guessDist", gDist.toString());
+                }
+                // if user has entered max amount of guesses with no right answer, print error
+                else if (guessArray.length == 5) {
                     setFinished(true);
                     toast.error(word);
+                    ls.setItem("played", parseInt(ls.played) + 1);
                 }
                 // if theres less than 6 guesses, add one more; otherwise don't
                 setGuessArray((current) => {

@@ -1,4 +1,6 @@
 import { FiDelete } from "react-icons/fi";
+import { useContext } from "react";
+import { AppConext } from "../App";
 
 let alphabet = [
     "q",
@@ -30,6 +32,19 @@ let alphabet = [
 ];
 
 function Keyboard() {
+    const { guess, setGuess } = useContext(AppConext);
+
+    function updateGuess(letter) {
+        // if guess is bigger than 5 chars, do not update guess keep the old value
+        setGuess((guess) => {
+            if (guess.length < 5) {
+                return guess + letter.toUpperCase();
+            } else {
+                return guess;
+            }
+        });
+    }
+
     return (
         <section className="flex flex-wrap gap-1.5 justify-center w-[31rem] place-items-center mx-auto">
             {alphabet.map((letter) => {
@@ -39,10 +54,22 @@ function Keyboard() {
                 if (letter == "m") {
                     return (
                         <>
-                            <button className="h-[3.75rem] w-11 rounded-md font-bold bg-gray-500 gap-1">
+                            <button
+                                className="h-[3.75rem] w-11 rounded-md font-bold bg-gray-500 gap-1"
+                                key={letter}
+                            >
                                 {letter.toUpperCase()}
                             </button>
-                            <button className="h-[3.75rem] w-16 rounded-md font-bold bg-gray-500 gap-1 flex justify-center place-items-center">
+                            <button
+                                className="h-[3.75rem] w-16 rounded-md font-bold bg-gray-500 gap-1 flex justify-center place-items-center"
+                                onClick={() => {
+                                    // remove last letter from guess if backspace is pressed
+                                    setGuess((oldState) =>
+                                        oldState.slice(0, -1)
+                                    );
+                                }}
+                                key="DELETE"
+                            >
                                 <FiDelete className="font-bold w-12 h-6" />
                             </button>
                         </>
@@ -51,17 +78,27 @@ function Keyboard() {
                     return (
                         <>
                             <button></button>
-                            <button className="h-[3.75rem] w-16 rounded-md font-bold bg-gray-500 gap-1 flex justify-center place-items-center text-sm">
+                            <button
+                                className="h-[3.75rem] w-16 rounded-md font-bold bg-gray-500 gap-1 flex justify-center place-items-center text-sm"
+                                key="ENTER"
+                            >
                                 ENTER
                             </button>
-                            <button className="h-[3.75rem] w-11 rounded-md font-bold bg-gray-500 gap-1">
+                            <button
+                                className="h-[3.75rem] w-11 rounded-md font-bold bg-gray-500 gap-1"
+                                key={letter}
+                            >
                                 {letter.toUpperCase()}
                             </button>
                         </>
                     );
                 } else {
                     return (
-                        <button className="h-[3.75rem] w-11 rounded-md font-bold bg-gray-500">
+                        <button
+                            className="h-[3.75rem] w-11 rounded-md font-bold bg-gray-500"
+                            onClick={() => updateGuess(letter)}
+                            key={letter}
+                        >
                             {letter.toUpperCase()}
                         </button>
                     );

@@ -2,8 +2,10 @@ import Grid from "./components/Grid";
 import Navbar from "./components/Navbar";
 import Keyboard from "./components/Keyboard";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import toast, { Toaster } from "react-hot-toast";
+
+export const AppConext = createContext();
 
 function App() {
     const [guess, setGuess] = useState("");
@@ -115,13 +117,15 @@ function App() {
             </div>
             <Navbar />
             <div className="flex justify-between flex-col h-screen pb-20">
-                <Grid
-                    guess={guess}
-                    guessArray={guessArray}
-                    hideGuess={finished}
-                    word={word}
-                />
-                <Keyboard />
+                <AppConext.Provider value={{ guess, setGuess }}>
+                    <Grid
+                        guess={guess}
+                        guessArray={guessArray}
+                        hideGuess={finished}
+                        word={word}
+                    />
+                    <Keyboard />
+                </AppConext.Provider>
             </div>
         </main>
     );
